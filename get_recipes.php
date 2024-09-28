@@ -10,24 +10,36 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
 
         if (isset($_GET["user_id"])) {
 
-            if(isset($_GET["page"])){
-                echo $recipes->get_user_recipe((int)$_GET["user_id"],(int)$_GET["page"]);
+            if (isset($_GET["page"])) {
+                if (isset($_GET["search_query"])) {
+                    echo $recipes->get_user_recipe((int)$_GET["user_id"], (int)$_GET["page"], ucfirst(strtolower($_GET["search_query"])));
+                } else {
+                    echo $recipes->get_user_recipe((int)$_GET["user_id"], (int)$_GET["page"]);
+                }
+            } else {
+                if (isset($_GET["search_query"])) {
+                    echo $recipes->get_user_recipe((int)$_GET["user_id"],search_query:ucfirst(strtolower($_GET["search_query"])));
+                }
+                else{
+                    echo $recipes->get_user_recipe((int)$_GET["user_id"]);
+                }
             }
-
-            else{
-                echo $recipes->get_user_recipe((int)$_GET["user_id"]);
-            }
-
         } else {
 
-            if(isset($_GET["page"])){
-                echo $recipes->get_all_recipe((int)$_GET["page"]);
-            }
+            if (isset($_GET["page"])) {
 
-            else{
-                echo $recipes->get_all_recipe();
+                if (isset($_GET["search_query"])) {
+                    echo $recipes->get_all_recipe((int)$_GET["page"], ucfirst(strtolower($_GET["search_query"])));
+                } else {
+                    echo $recipes->get_all_recipe((int)$_GET["page"]);
+                }
+            } else {
+                if (isset($_GET["search_query"])) {
+                    echo $recipes->get_all_recipe(search_query:ucfirst(strtolower($_GET["search_query"])));
+                } else {
+                    echo $recipes->get_all_recipe();
+                }
             }
-
         }
     } catch (Exception $e) {
         echo json_encode([
@@ -36,4 +48,3 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
         ]);
     }
 }
-?>

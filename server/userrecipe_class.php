@@ -2,8 +2,8 @@
 
 abstract class Abstract_UserRecipes
 {
-    abstract public function get_all_recipe(int $page): string;
-    abstract public function get_user_recipe(int $user_id, int $page): string;
+    abstract public function get_all_recipe(int $page,string $search_query): string;
+    abstract public function get_user_recipe(int $user_id, int $page,string $search_query): string;
     abstract public function enlist_user_recipe(int $userid, array $recipe_data): string;
 }
 
@@ -46,12 +46,16 @@ class User_Recipes extends Abstract_UserRecipes
         }
     }
 
-    public function get_all_recipe(int $page = 0): string
+    public function get_all_recipe(int $page = 0,string $search_query=""): string
     {
         try {
 
             if ($page <= 0) {
-                $res = $this->database_conn->prepare("SELECT * FROM recipes");
+                $res = $this->database_conn->prepare("SELECT * FROM recipes WHERE title LIKE :squery");
+
+                $s_pattern = "%".$search_query."%";
+
+                $res->bindParam(":squery",$s_pattern,PDO::PARAM_STR);
 
                 $res->execute();
 
@@ -67,8 +71,11 @@ class User_Recipes extends Abstract_UserRecipes
 
                 $offset = $limit * $page - $limit;
 
-                $res = $this->database_conn->prepare("SELECT * FROM recipes LIMIT :datalimit OFFSET :dataoffset");
+                $res = $this->database_conn->prepare("SELECT * FROM recipes WHERE title LIKE :squery LIMIT :datalimit OFFSET :dataoffset");
 
+                $s_pattern = "%".$search_query."%";
+
+                $res->bindParam(":squery",$s_pattern,PDO::PARAM_STR);
                 $res->bindParam(":datalimit",$limit,PDO::PARAM_INT);
                 $res->bindParam(":dataoffset",$offset,PDO::PARAM_INT);
 
@@ -90,13 +97,16 @@ class User_Recipes extends Abstract_UserRecipes
         }
     }
 
-    public function get_user_recipe(int $user_id, int $page = 0): string
+    public function get_user_recipe(int $user_id, int $page = 0,string $search_query=""): string
     {
 
         try {
             if ($page <= 0) {
-                $res_recipes = $this->database_conn->prepare("SELECT * FROM recipes WHERE user_id=:userid");
+                $res_recipes = $this->database_conn->prepare("SELECT * FROM recipes WHERE user_id=:userid AND title LIKE :squery");
 
+                $s_pattern = "%".$search_query."%";
+
+                $res_recipes->bindParam(":squery",$s_pattern,PDO::PARAM_STR);
                 $res_recipes->bindParam(":userid",$user_id,PDO::PARAM_INT);
 
                 $res_recipes->execute();
@@ -112,8 +122,11 @@ class User_Recipes extends Abstract_UserRecipes
 
                 $offset = $limit * $page - $limit;
 
-                $res_recipes = $this->database_conn->prepare("SELECT * FROM recipes WHERE user_id=:userid LIMIT :datalimit OFFSET :dataoffset");
+                $res_recipes = $this->database_conn->prepare("SELECT * FROM recipes WHERE user_id=:userid AND title LIKE :squery LIMIT :datalimit OFFSET :dataoffset");
 
+                $s_pattern = "%".$search_query."%";
+
+                $res_recipes->bindParam(":squery",$s_pattern,PDO::PARAM_STR);
                 $res_recipes->bindParam(":userid",$user_id,PDO::PARAM_INT);
                 $res_recipes->bindParam(":datalimit",$limit,PDO::PARAM_INT);
                 $res_recipes->bindParam(":dataoffset",$offset,PDO::PARAM_INT);
