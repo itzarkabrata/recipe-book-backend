@@ -58,7 +58,7 @@ class User_Recipes extends Abstract_UserRecipes
         try {
 
             if ($page <= 0) {
-                $res = $this->database_conn->prepare("SELECT * FROM recipes WHERE title LIKE :squery");
+                $res = $this->database_conn->prepare("SELECT * FROM recipes WHERE LOWER(title) LIKE :squery");
 
                 $s_pattern = "%".$search_query."%";
 
@@ -78,7 +78,7 @@ class User_Recipes extends Abstract_UserRecipes
 
                 $offset = $limit * $page - $limit;
 
-                $res = $this->database_conn->prepare("SELECT * FROM recipes WHERE title LIKE :squery LIMIT :datalimit OFFSET :dataoffset");
+                $res = $this->database_conn->prepare("SELECT * FROM recipes WHERE LOWER(title) LIKE :squery LIMIT :datalimit OFFSET :dataoffset");
 
                 $s_pattern = "%".$search_query."%";
 
@@ -109,7 +109,7 @@ class User_Recipes extends Abstract_UserRecipes
 
         try {
             if ($page <= 0) {
-                $res_recipes = $this->database_conn->prepare("SELECT * FROM recipes WHERE user_id=:userid AND title LIKE :squery");
+                $res_recipes = $this->database_conn->prepare("SELECT * FROM recipes WHERE user_id=:userid AND LOWER(title) LIKE :squery");
 
                 $s_pattern = "%".$search_query."%";
 
@@ -129,7 +129,7 @@ class User_Recipes extends Abstract_UserRecipes
 
                 $offset = $limit * $page - $limit;
 
-                $res_recipes = $this->database_conn->prepare("SELECT * FROM recipes WHERE user_id=:userid AND title LIKE :squery LIMIT :datalimit OFFSET :dataoffset");
+                $res_recipes = $this->database_conn->prepare("SELECT * FROM recipes WHERE user_id=:userid AND LOWER(title) LIKE :squery LIMIT :datalimit OFFSET :dataoffset");
 
                 $s_pattern = "%".$search_query."%";
 

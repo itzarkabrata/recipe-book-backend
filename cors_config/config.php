@@ -2,7 +2,8 @@
 
 $allowed_origins = [
     "http://localhost:5173",
-    "https://recipe-book-nine-swart.vercel.app"
+    "https://recipe-book-nine-swart.vercel.app",
+    ""
 ];
 
 // Get the origin of the incoming request
