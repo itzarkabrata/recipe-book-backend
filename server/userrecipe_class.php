@@ -24,7 +24,7 @@ class User_Recipes extends Abstract_UserRecipes
 
     private $databse_conn_status = null;
 
-    private $ssl_ca = "/xampp/htdocs/recipe_book_backend/db/isrgrootx1.pem";
+    private $ssl_ca = "db/isrgrootx1.pem";
 
     public function __construct()
     {
@@ -36,7 +36,7 @@ class User_Recipes extends Abstract_UserRecipes
 
             
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            
+
             $this->database_conn = $db;
 
             if ($db) {

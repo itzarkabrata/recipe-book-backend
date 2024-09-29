@@ -26,7 +26,7 @@ class Auth_User extends Abstract_User
 
     private $user_password = null;
 
-    private $ssl_ca = "/xampp/htdocs/recipe_book_backend/db/isrgrootx1.pem";
+    private $ssl_ca = "db/isrgrootx1.pem";
 
     public function __construct()
     {
@@ -39,7 +39,7 @@ class Auth_User extends Abstract_User
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             
             $this->database_conn = $db;
-            
+
             if ($db) {
                 $this->databse_conn_status = [
                     "status" => 200,
