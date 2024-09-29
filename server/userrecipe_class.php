@@ -10,27 +10,34 @@ abstract class Abstract_UserRecipes
 class User_Recipes extends Abstract_UserRecipes
 {
 
-    private $host_user = "localhost";
+    private $host_user = "gateway01.ap-southeast-1.prod.aws.tidbcloud.com";
 
-    private $user_name = "root";
+    private $user_name = "2F7Xc2PWaCveCeC.root";
 
-    private $password = null;
+    private $password = "SUgdYUO9Iz9T5eoh";
 
     private $database_name = "recipebook";
+
+    private $port = 4000;
 
     private $database_conn = null;
 
     private $databse_conn_status = null;
 
+    private $ssl_ca = "/xampp/htdocs/recipe_book_backend/db/isrgrootx1.pem";
+
     public function __construct()
     {
         try {
 
-            $db = new PDO("mysql:host=$this->host_user;dbname=$this->database_name", $this->user_name, $this->password);
+            $db = new PDO("mysql:host=$this->host_user;port=$this->port;dbname=$this->database_name", $this->user_name, $this->password,[
+                PDO::MYSQL_ATTR_SSL_CA => $this->ssl_ca,
+            ]);
 
-            $this->database_conn = $db;
-
+            
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            
+            $this->database_conn = $db;
 
             if ($db) {
                 $this->databse_conn_status = [
